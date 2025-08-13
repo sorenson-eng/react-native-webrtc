@@ -206,6 +206,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     NSString *trackUUID = [[NSUUID UUID] UUIDString];
     RTCVideoTrack *videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource trackId:trackUUID];
 
+    // TODO: different Capturer based off asset type
     FileCapturer *fileCapturer = [[FileCapturer alloc] initWithDelegate:videoSource asset:asset];
     FileCaptureController *fileCaptureController =
         [[FileCaptureController alloc] initWithCapturer:fileCapturer];
