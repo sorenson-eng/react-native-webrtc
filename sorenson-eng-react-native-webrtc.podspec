@@ -20,5 +20,4 @@ Pod::Spec.new do |s|
   s.framework           = 'AudioToolbox','AVFoundation', 'CoreAudio', 'CoreGraphics', 'CoreVideo', 'GLKit', 'VideoToolbox'
   s.dependency          'React-Core'
   s.dependency          'JitsiWebRTC', '~> 124.0.0'
-  s.dependency          'SDWebImage', '~> 5.0'
 end
