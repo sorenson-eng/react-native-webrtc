@@ -66,9 +66,6 @@ RTCCVPixelBuffer *rtcPixelBufferFromUIImage(UIImage *image) {
   
   CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
   
-  CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-  CGContextFillRect(context, CGRectMake(0, 0, width, height));
-  
   CGRect drawRect = CGRectMake(0, 0, width, height);
   CGContextDrawImage(context, drawRect, image.CGImage);
   
