@@ -3,13 +3,13 @@ require 'json'
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 Pod::Spec.new do |s|
-  s.name                = package['name']
+  s.name                = 'sorenson-eng-react-native-webrtc'
   s.version             = package['version']
   s.summary             = package['description']
-  s.homepage            = 'https://github.com/react-native-webrtc/react-native-webrtc'
+  s.homepage            = 'https://github.com/sorenson-eng/react-native-webrtc'
   s.license             = package['license']
-  s.author              = 'https://github.com/react-native-webrtc/react-native-webrtc/graphs/contributors'
-  s.source              = { :git => 'git@github.com:react-native-webrtc/react-native-webrtc.git', :tag => 'release #{s.version}' }
+  s.author              = 'https://github.com/sorenson-eng/react-native-webrtc/graphs/contributors'
+  s.source              = { :git => 'git@github.com:sorenson-eng/react-native-webrtc.git', :tag => 'release #{s.version}' }
   s.requires_arc        = true
 
   s.platforms           = { :ios => '12.0', :osx => '10.13', :tvos => '16.0' }
@@ -20,4 +20,5 @@ Pod::Spec.new do |s|
   s.framework           = 'AudioToolbox','AVFoundation', 'CoreAudio', 'CoreGraphics', 'CoreVideo', 'GLKit', 'VideoToolbox'
   s.dependency          'React-Core'
   s.dependency          'JitsiWebRTC', '~> 124.0.0'
+  s.dependency          'SDWebImage', '~> 5.0'
 end
