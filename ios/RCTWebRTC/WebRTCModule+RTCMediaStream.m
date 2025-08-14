@@ -197,7 +197,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
 }
 
 - (RTCVideoTrack *)createFileCaptureVideoTrackWithAsset:(NSString *)asset {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_OSX || TARGET_OS_TV
+#if TARGET_OS_TV
     return nil;
 #endif
 
