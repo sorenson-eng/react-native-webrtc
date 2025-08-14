@@ -4,7 +4,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// TODO: abstract/base class if/when more file types need to be supported
 @interface FileCapturer : RTCVideoCapturer
 
 @property(nonatomic, weak) id<CapturerEventsDelegate> eventsDelegate;
