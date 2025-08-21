@@ -218,7 +218,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     return videoTrack;
 }
 
-RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+- (void)makeImageStreamWithImage:(UIImage *) image resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject asset:(NSString *)asset {
     RTCVideoTrack *videoTrack = [self createImageCaptureVideoTrackWithAsset:asset];
 
     if (videoTrack == nil) {
@@ -243,6 +243,16 @@ RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBl
 
     self.localStreams[mediaStreamId] = mediaStream;
     resolve(@{@"streamId" : mediaStreamId, @"track" : trackInfo});
+}
+
+RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    imageFromAsset(asset,
+        ^(UIImage *image) {
+            [self makeImageStreamWithImage:image resolver:resolve rejecter:reject asset:asset];
+        },
+        ^(NSString *failure) {
+            reject(@"load_failure", failure, nil);
+        });
 }
 
 /**

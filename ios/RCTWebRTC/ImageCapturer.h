@@ -4,6 +4,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^SuccessBlock)(UIImage *image);
+typedef void (^FailureBlock)(NSString *reason);
+
+void imageFromAsset(NSString *asset, SuccessBlock _Nullable success, FailureBlock _Nullable failure);
+
 @interface ImageCapturer : RTCVideoCapturer
 
 @property(nonatomic, weak) id<CapturerEventsDelegate> eventsDelegate;

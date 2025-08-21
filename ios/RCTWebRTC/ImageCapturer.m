@@ -14,6 +14,32 @@ static const NSTimeInterval kBurstInterval = 0.033;
 static const NSTimeInterval kSteadyInterval = 1.5;
 static const int64_t kBurstDuration = 3LL * NSEC_PER_SEC;
 
+void imageFromAsset(NSString *asset, SuccessBlock _Nullable success, FailureBlock _Nullable failure) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *localImage = [UIImage imageNamed:asset];
+        if (localImage != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{ if (success) success(localImage); });
+            return;
+        }
+        NSURL *url = [NSURL URLWithString: asset];
+        if (url == nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{ if (failure) failure(@"invalid url"); });
+            return;
+        }
+        SDWebImageManager *imageManager = [SDWebImageManager sharedManager];
+        [imageManager loadImageWithURL:url
+                        options:0
+                        progress:nil
+                        completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+                          if (image && finished) {
+                            dispatch_async(dispatch_get_main_queue(), ^{ if (success) success(image); });
+                          } else {
+                            dispatch_async(dispatch_get_main_queue(), ^{ if (failure) failure(@"failed to load image"); });
+                          }
+        }];
+    });
+}
+
 RTCCVPixelBuffer *rtcPixelBufferFromUIImage(UIImage *image) {
   if (!image) {
     return nil;
