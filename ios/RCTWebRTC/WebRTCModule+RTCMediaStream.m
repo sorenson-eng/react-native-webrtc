@@ -218,7 +218,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     return videoTrack;
 }
 
-- (void)makeImageStreamWithImage:(RTCCVPixelBuffer *) image resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject asset:(NSString *)asset {
+- (void)makeImageStreamWithImage:(RTCCVPixelBuffer *) image resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject {
     RTCVideoTrack *videoTrack = [self createImageCaptureVideoTrackWithImage:image];
 
     if (videoTrack == nil) {
@@ -248,7 +248,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
 RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     imageFromAsset(asset,
         ^(RTCCVPixelBuffer *image) {
-            [self makeImageStreamWithImage:image resolver:resolve rejecter:reject asset:asset];
+            [self makeImageStreamWithImage:image resolver:resolve rejecter:reject];
         },
         ^(NSString *failure) {
             reject(@"load_failure", failure, nil);
