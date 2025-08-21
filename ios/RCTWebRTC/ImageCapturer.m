@@ -6,7 +6,7 @@
 #import <WebRTC/RTCCVPixelBuffer.h>
 #import <WebRTC/RTCVideoFrameBuffer.h>
 
-#import "FileCapturer.h"
+#import "ImageCapturer.h"
 
 #import <SDWebImage/SDWebImage.h>
 
@@ -80,7 +80,7 @@ RTCCVPixelBuffer *rtcPixelBufferFromUIImage(UIImage *image) {
   return rtcPixelBuffer;
 }
 
-@implementation FileCapturer {
+@implementation ImageCapturer {
     mach_timebase_info_data_t _timebaseInfo;
     int64_t _startTimeStampNs;
     NSTimer *_timer;

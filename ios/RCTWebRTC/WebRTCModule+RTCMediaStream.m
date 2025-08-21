@@ -13,8 +13,8 @@
 #import "ProcessorProvider.h"
 #import "ScreenCaptureController.h"
 #import "ScreenCapturer.h"
-#import "FileCaptureController.h"
-#import "FileCapturer.h"
+#import "ImageCaptureController.h"
+#import "ImageCapturer.h"
 #import "TrackCapturerEventsEmitter.h"
 #import "VideoCaptureController.h"
 
@@ -196,7 +196,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
 #endif
 }
 
-- (RTCVideoTrack *)createFileCaptureVideoTrackWithAsset:(NSString *)asset {
+- (RTCVideoTrack *)createImageCaptureVideoTrackWithAsset:(NSString *)asset {
 #if TARGET_OS_TV
     return nil;
 #endif
@@ -206,20 +206,20 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     NSString *trackUUID = [[NSUUID UUID] UUIDString];
     RTCVideoTrack *videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource trackId:trackUUID];
 
-    FileCapturer *fileCapturer = [[FileCapturer alloc] initWithDelegate:videoSource asset:asset];
-    FileCaptureController *fileCaptureController =
-        [[FileCaptureController alloc] initWithCapturer:fileCapturer];
+    ImageCapturer *imageCapturer = [[ImageCapturer alloc] initWithDelegate:videoSource asset:asset];
+    ImageCaptureController *imageCaptureController =
+        [[ImageCaptureController alloc] initWithCapturer:imageCapturer];
 
     TrackCapturerEventsEmitter *emitter = [[TrackCapturerEventsEmitter alloc] initWith:trackUUID webRTCModule:self];
-    fileCaptureController.eventsDelegate = emitter;
-    videoTrack.captureController = fileCaptureController;
-    [fileCaptureController startCapture];
+    imageCaptureController.eventsDelegate = emitter;
+    videoTrack.captureController = imageCaptureController;
+    [imageCaptureController startCapture];
 
     return videoTrack;
 }
 
 RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    RTCVideoTrack *videoTrack = [self createFileCaptureVideoTrackWithAsset:asset];
+    RTCVideoTrack *videoTrack = [self createImageCaptureVideoTrackWithAsset:asset];
 
     if (videoTrack == nil) {
         reject(@"DOMException", @"AbortError", nil);

@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FileCapturer : RTCVideoCapturer
+@interface ImageCapturer : RTCVideoCapturer
 
 @property(nonatomic, weak) id<CapturerEventsDelegate> eventsDelegate;
 
