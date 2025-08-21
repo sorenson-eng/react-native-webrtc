@@ -1,10 +1,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import <WebRTC/RTCVideoCapturer.h>
+#import <WebRTC/RTCCVPixelBuffer.h>
 #import "CapturerEventsDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^SuccessBlock)(UIImage *image);
+typedef void (^SuccessBlock)(RTCCVPixelBuffer *image);
 typedef void (^FailureBlock)(NSString *reason);
 
 void imageFromAsset(NSString *asset, SuccessBlock _Nullable success, FailureBlock _Nullable failure);
@@ -13,7 +14,7 @@ void imageFromAsset(NSString *asset, SuccessBlock _Nullable success, FailureBloc
 
 @property(nonatomic, weak) id<CapturerEventsDelegate> eventsDelegate;
 
-- (instancetype)initWithDelegate:(__weak id<RTCVideoCapturerDelegate>)delegate asset:(NSString *)asset;
+- (instancetype)initWithDelegate:(__weak id<RTCVideoCapturerDelegate>)delegate image:(RTCCVPixelBuffer *)image;
 - (void)startCapture;
 - (void)stopCapture;
 

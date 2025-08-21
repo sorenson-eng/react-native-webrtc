@@ -196,7 +196,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
 #endif
 }
 
-- (RTCVideoTrack *)createImageCaptureVideoTrackWithAsset:(NSString *)asset {
+- (RTCVideoTrack *)createImageCaptureVideoTrackWithImage:(RTCCVPixelBuffer *)image {
 #if TARGET_OS_TV
     return nil;
 #endif
@@ -206,7 +206,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     NSString *trackUUID = [[NSUUID UUID] UUIDString];
     RTCVideoTrack *videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource trackId:trackUUID];
 
-    ImageCapturer *imageCapturer = [[ImageCapturer alloc] initWithDelegate:videoSource asset:asset];
+    ImageCapturer *imageCapturer = [[ImageCapturer alloc] initWithDelegate:videoSource image:image];
     ImageCaptureController *imageCaptureController =
         [[ImageCaptureController alloc] initWithCapturer:imageCapturer];
 
@@ -218,8 +218,8 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
     return videoTrack;
 }
 
-- (void)makeImageStreamWithImage:(UIImage *) image resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject asset:(NSString *)asset {
-    RTCVideoTrack *videoTrack = [self createImageCaptureVideoTrackWithAsset:asset];
+- (void)makeImageStreamWithImage:(RTCCVPixelBuffer *) image resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject asset:(NSString *)asset {
+    RTCVideoTrack *videoTrack = [self createImageCaptureVideoTrackWithImage:image];
 
     if (videoTrack == nil) {
         reject(@"DOMException", @"AbortError", nil);
@@ -247,7 +247,7 @@ RCT_EXPORT_METHOD(getDisplayMedia : (RCTPromiseResolveBlock)resolve rejecter : (
 
 RCT_EXPORT_METHOD(getFileMedia : (NSString *)asset resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     imageFromAsset(asset,
-        ^(UIImage *image) {
+        ^(RTCCVPixelBuffer *image) {
             [self makeImageStreamWithImage:image resolver:resolve rejecter:reject asset:asset];
         },
         ^(NSString *failure) {
