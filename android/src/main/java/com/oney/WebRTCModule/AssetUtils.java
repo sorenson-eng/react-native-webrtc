@@ -1,10 +1,9 @@
 package com.oney.WebRTCModule;
 
-import android.content.Context;
 import android.net.Uri;
 
 public class AssetUtils {
-  public static Uri assetStringToUri(final Context context, final String asset) {
+  public static Uri assetStringToUri(final String asset) {
     try {
       Uri uri = Uri.parse(asset);
       return uri;

@@ -250,7 +250,7 @@ public class ImageLoader {
   }
 
   private void doLoad() {
-    final Uri uri = AssetUtils.assetStringToUri(context, asset.src);
+    final Uri uri = AssetUtils.assetStringToUri(asset.src);
     final String scheme = AssetUtils.getAssetUriScheme(uri);
     final int resId = context.getResources().getIdentifier(asset.src, "raw", context.getPackageName());
     if (scheme.startsWith(HTTP_SCHEME)) {
