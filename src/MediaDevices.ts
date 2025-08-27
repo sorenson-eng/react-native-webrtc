@@ -2,7 +2,7 @@ import { EventTarget, Event, defineEventAttribute } from 'event-target-shim/inde
 import { NativeModules } from 'react-native';
 
 import getDisplayMedia from './getDisplayMedia';
-import getFileMedia from './getFileMedia';
+import getFileMedia, { ImageAsset, YuvAsset } from './getFileMedia';
 import getUserMedia, { Constraints } from './getUserMedia';
 
 const { WebRTCModule } = NativeModules;
@@ -45,13 +45,11 @@ class MediaDevices extends EventTarget<MediaDevicesEventMap> {
     /**
      * File based media stream
      *
-     * NOTE: Only supports static images at the moment
-     *
-     * @param source A file path, url, or import/require result
+     * @param source Asset information
      * @returns {Promise}
      */
-    getFileMedia(source: number | string) {
-        return getFileMedia(source);
+    getFileMedia(asset: YuvAsset | ImageAsset) {
+        return getFileMedia(asset);
     }
 }
 

@@ -296,6 +296,47 @@ class GetUserMediaImpl {
         }
     }
 
+    void getFileMedia(String src, int width, int height, boolean cache, Promise promise) {
+        Activity currentActivity = this.reactContext.getCurrentActivity();
+        if (currentActivity == null) {
+            promise.reject(new RuntimeException("No current Activity."));
+            return;
+        }
+        ImageLoader.Asset asset = ImageLoader.makeAsset(src, width, height, cache);
+        ImageLoader loader = new ImageLoader(
+            reactContext,
+            asset,
+            (VideoFrame.Buffer image) -> {
+                Log.d(TAG, "image (" + src + ") loaded");
+                ImageCaptureController imageCaptureController = new ImageCaptureController(
+                    reactContext.getCurrentActivity(), image, image.getWidth(), image.getHeight());
+                VideoTrack track = createVideoTrack(imageCaptureController);
+
+                if (track == null) {
+                    promise.reject(new RuntimeException("ScreenTrack is null."));
+                } else {
+                    createStream(new MediaStreamTrack[] {track}, (streamId, tracksInfo) -> {
+                        WritableMap data = Arguments.createMap();
+
+                        data.putString("streamId", streamId);
+
+                        if (tracksInfo.size() == 0) {
+                            promise.reject(new RuntimeException("No FileTrackInfo found."));
+                        } else {
+                            data.putMap("track", tracksInfo.get(0));
+                            promise.resolve(data);
+                        }
+                    });
+                }
+            },
+            (String reason) -> {
+                Log.d(TAG, "image (" + src + ") failed loading: " + reason);
+                promise.reject(new RuntimeException("Could not load image: " + reason));
+
+            });
+        loader.load();
+    }
+
     private void createScreenStream() {
         VideoTrack track = createScreenTrack();
 
